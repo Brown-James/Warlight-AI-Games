@@ -1,6 +1,6 @@
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\bin\Debug\WarlightBot.exe.config
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\obj\Debug\WarlightBot.csprojResolveAssemblyReference.cache
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\bin\Debug\WarlightBot.exe
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\bin\Debug\WarlightBot.pdb
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\obj\Debug\WarlightBot.exe
-E:\James\Dropbox\Programming\AI Games\WarlightBot\WarlightBot\obj\Debug\WarlightBot.pdb
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\bin\Debug\WarlightBot.exe.config
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\bin\Debug\WarlightBot.exe
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\bin\Debug\WarlightBot.pdb
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\obj\Debug\WarlightBot.csprojResolveAssemblyReference.cache
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\obj\Debug\WarlightBot.exe
+E:\James\Dropbox\Programming\AI Games\WarlightBot\Warlight-AI-Games\WarlightBot\obj\Debug\WarlightBot.pdb
