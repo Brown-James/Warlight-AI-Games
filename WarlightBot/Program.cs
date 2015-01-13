@@ -11,23 +11,23 @@ namespace WarlightBot
         public static void Main()
         {
             Map map = new Map();
-            map.AddSuperRegion(new SuperRegion(1,5));
-            
-            map.AddRegion(new Region(0, 1));
-            map.AddRegion(new Region(1, 1));
-            map.AddRegion(new Region(2, 1));
-
-            map.SuperRegions[0].AddRegion(map.Regions[0]);
-            map.SuperRegions[0].AddRegion(map.Regions[1]);
-            map.SuperRegions[0].AddRegion(map.Regions[2]);
+            map.AddSuperRegion(new SuperRegion(0, 5));
+            map.AddRegion(new Region(0, 0));
+            map.AddRegion(new Region(1, 0));
+            map.AddRegion(new Region(2, 0));
 
             map.CreateNeighbours(0, 1);
             map.CreateNeighbours(0, 2);
             map.CreateNeighbours(1, 2);
+            map.CreateNeighbours(1, 0);
 
-            Console.WriteLine(map.SuperRegions[0].ToString());
+            map.superRegions[0].AddRegion(map.Regions[0]);
+            map.superRegions[0].AddRegion(map.Regions[1]);
+            map.superRegions[0].AddRegion(map.Regions[2]);
+
+            Console.WriteLine(map.superRegions[0].ToString());
+
             Console.ReadLine();
-
 
             //WarlightBot bot = new WarlightBot();
             //Console.WriteLine("Warlight bot running");
@@ -109,9 +109,18 @@ namespace WarlightBot
                         }
 
                     }
-                    else if (parts[1] == "neighbours")
+                    else if (parts[1] == "neighbors")
                     {
-
+                        for(int i = 2; i <= parts.Length - 1; i++)
+                        {
+                            int region1Id = Convert.ToInt32(parts[i]);
+                            i++;
+                            String[] neighbours = parts[i].Split(',');
+                            foreach(String neighbour in neighbours)
+                            {
+                                map.CreateNeighbours(region1Id, Convert.ToInt32(neighbour));
+                            }
+                        }
                     }
                     else if (parts[1] == "wastelands")
                     {

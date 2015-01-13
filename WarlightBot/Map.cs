@@ -53,16 +53,25 @@ namespace WarlightBot
                 {
                     regionsPosition1 = i;
                 }
-                else if(regions[i].Id == id2)
+                
+                if(regions[i].Id == id2)
                 {
                     regionsPosition2 = i;
                 }
             }
 
             // Create the links
+            // Check regions aren't already neighbours before creating link
+            //if (!(regions[regionsPosition1].Neighbours.Contains(regions[regionsPosition2])))
+            //{
+                //Console.WriteLine("Already neighbours1");
             regions[regionsPosition1].Neighbours.Add(regions[regionsPosition2]);
+            //}
+            //if (!(regions[regionsPosition2].Neighbours.Contains(regions[regionsPosition1])))
+            //{
+                //Console.WriteLine("Already neighbours2");
             regions[regionsPosition2].Neighbours.Add(regions[regionsPosition1]);
-
+            //}
         }
     }
 }
