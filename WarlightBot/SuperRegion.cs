@@ -38,10 +38,10 @@ namespace WarlightBot
         // Returns the owner of the SuperRegion as a string
         public string OwnedBy()
         {
-            string ownedBy = subRegions[0].PlayerName;
+            string ownedBy = subRegions[0].OwnerName;
             foreach(Region region in subRegions)
             {
-                if (region.PlayerName != ownedBy)
+                if (region.OwnerName != ownedBy)
                 {
                     return null;
                 }

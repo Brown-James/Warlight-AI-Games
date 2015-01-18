@@ -77,6 +77,10 @@ namespace WarlightBot
                     {
                         totalArmiesThisTurn = Convert.ToInt32(parts[2]);
                     }
+                    else if (parts[1] == "starting_regions")
+                    {
+                        Console.WriteLine(parts[2]);
+                    }
                 }
                 else if (parts[0] == "setup_map")
                 {
@@ -124,7 +128,16 @@ namespace WarlightBot
                     }
                     else if (parts[1] == "wastelands")
                     {
-
+                        for(int i = 2; i <= parts.Length - 1; i++)
+                        {
+                            foreach(Region region in map.Regions)
+                            {
+                                if(region.Id == Convert.ToInt32(parts[i]))
+                                {
+                                    region.OwnerName = "neutral";
+                                }
+                            }
+                        }
                     }
                     else if (parts[1] == "opponent_starting_regions")
                     {

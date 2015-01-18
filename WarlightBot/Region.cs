@@ -11,7 +11,7 @@ namespace WarlightBot
         private int id;
         private List<Region> neighbours = new List<Region>();
         private SuperRegion superRegion;
-        private String playerName = "";          // name of the player who currently owns the territory
+        private String ownerName = "";          // name of the player who currently owns the territory
         private int armies = 0;             // the number of armies currently in the territory
         private int superRegionId;
 
@@ -38,12 +38,12 @@ namespace WarlightBot
         /// <param name="Neighbours"></param>
         /// <param name="SuperRegion"></param>
         /// <param name="PlayerName"></param>
-        public Region(int Id, List<Region> Neighbours, SuperRegion SuperRegion, String PlayerName)
+        public Region(int Id, List<Region> Neighbours, SuperRegion SuperRegion, String OwnerName)
         {
             this.id = Id;
             this.neighbours = Neighbours;
             this.superRegion = SuperRegion;
-            this.playerName = PlayerName;
+            this.ownerName = OwnerName;
         }
 
         public int Id
@@ -51,10 +51,10 @@ namespace WarlightBot
             get { return id; }
         }
 
-        public string PlayerName
+        public string OwnerName
         {
-            get { return playerName; }
-            set { playerName = value; }
+            get { return ownerName; }
+            set { ownerName = value; }
         }
 
         public List<Region> Neighbours
@@ -65,7 +65,7 @@ namespace WarlightBot
 
         public override string ToString()
         {
-            string str = "ID : " + id.ToString() + "\nPlayer Name : " + playerName + "\nArmies : " + armies.ToString() + "\nSuperRegion ID : " + superRegionId + "\nNeighbours : ";
+            string str = "ID : " + id.ToString() + "\nOwner Name : " + ownerName + "\nArmies : " + armies.ToString() + "\nSuperRegion ID : " + superRegionId + "\nNeighbours : ";
             foreach(Region region in neighbours)
             {
                 str += region.id + " ";
