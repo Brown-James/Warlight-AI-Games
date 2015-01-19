@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WarlightBot
 {
@@ -10,9 +11,11 @@ namespace WarlightBot
     {
         private string myName;
         private string opponentName;
-        private int totalArmiesThisTurn;
+        private int totalArmiesThisTurn = 5;
 
         private Map map;
+
+        private Stopwatch timer = new Stopwatch();
 
         public WarlightBot()
         {
@@ -52,7 +55,7 @@ namespace WarlightBot
                         }
                         else if (parts[1] == "starting_regions")
                         {
-                            Console.WriteLine(parts[2]);
+
                         }
                     }
                     else if (parts[0] == "setup_map")
@@ -119,7 +122,23 @@ namespace WarlightBot
                     }
                     else if (parts[0] == "update_map")
                     {
+                        for (int i = 1; i <= parts.Length - 1; i++)
+                        {
+                            int regionId = Convert.ToInt32(parts[i]);
+                            i++;
+                            String owner = parts[i];
+                            i++;
+                            int armies = Convert.ToInt32(parts[i]);
+                            foreach (Region region in map.Regions)
+                            {
+                                if (region.Id == regionId)
+                                {
+                                    region.OwnerName = owner;
+                                    region.Armies = armies;
+                                }
+                            }
 
+                        }
                     }
                     else if (parts[0] == "opponent_moves")
                     {
@@ -127,19 +146,38 @@ namespace WarlightBot
                     }
                     else if (parts[0] == "go")
                     {
-
+                        String output = "";
+                        if (parts[1] == "place_armies")
+                        {
+                            for (int i = 0; i <= map.Regions.Count - 1; i++)
+                            {
+                                if (map.Regions[i].OwnerName == myName)
+                                {
+                                    output += myName + " place_armies " + map.Regions[i].Id.ToString() + " " + totalArmiesThisTurn.ToString();
+                                    break;
+                                }
+                            }
+                            Console.Out.WriteLine(output);
+                        }
                     }
                     else if (parts[0] == "pick_starting_region")
                     {
-                        Console.WriteLine("Give me anywhere");
+                        Console.WriteLine(parts[2].ToString());
                     }
                     else if (parts[0] == "exit")
                     {
                         run = false;
                     }
+                    else if(parts[0] == "superregionsstring")
+                    {
+                        foreach(SuperRegion superRegion in map.SuperRegions)
+                        {
+                            Console.WriteLine(superRegion.ToString());
+                        }
+                    }
                     line = "";
                 }
-        #endregion
+                #endregion
             }
         }
     }

@@ -57,6 +57,12 @@ namespace WarlightBot
             set { ownerName = value; }
         }
 
+        public int Armies
+        {
+            get { return armies; }
+            set { armies = value; }
+        }
+
         public List<Region> Neighbours
         {
             get { return neighbours; }
