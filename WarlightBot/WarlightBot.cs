@@ -146,18 +146,13 @@ namespace WarlightBot
                     }
                     else if (parts[0] == "go")
                     {
-                        String output = "";
                         if (parts[1] == "place_armies")
                         {
-                            for (int i = 0; i <= map.Regions.Count - 1; i++)
-                            {
-                                if (map.Regions[i].OwnerName == myName)
-                                {
-                                    output += myName + " place_armies " + map.Regions[i].Id.ToString() + " " + totalArmiesThisTurn.ToString();
-                                    break;
-                                }
-                            }
-                            Console.Out.WriteLine(output);
+                            Console.WriteLine(PlaceArmies(map));
+                        }
+                        else if(parts[1] == "attack/transfer")
+                        {
+                            Console.WriteLine("No moves");
                         }
                     }
                     else if (parts[0] == "pick_starting_region")
@@ -179,6 +174,20 @@ namespace WarlightBot
                 }
                 #endregion
             }
+        }
+
+        private string PlaceArmies(Map map)
+        {
+            string output = "";
+            for (int i = 0; i <= map.Regions.Count - 1; i++)
+            {
+                if (map.Regions[i].OwnerName == myName)
+                {
+                    output += myName + " place_armies " + map.Regions[i].Id.ToString() + " " + totalArmiesThisTurn.ToString();
+                    return output;
+                }
+            }
+            return output;
         }
     }
 }

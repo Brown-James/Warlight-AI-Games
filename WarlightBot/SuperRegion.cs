@@ -9,7 +9,7 @@ namespace WarlightBot
     class SuperRegion
     {
         private List<Region> subRegions = new List<Region>();
-        private int armiesPerTurn;          // the bonus armies earned per turn from this super region
+        private int armiesPerTurn;                              // the bonus armies earned per turn from this super region
         private int id;
 
         public int Id
