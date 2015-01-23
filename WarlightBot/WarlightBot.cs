@@ -9,6 +9,8 @@ namespace WarlightBot
 {
     class WarlightBot
     {
+        #region Fields
+
         private string myName;
         private string opponentName;
         private int totalArmiesThisTurn = 5;
@@ -17,10 +19,16 @@ namespace WarlightBot
 
         private Stopwatch timer = new Stopwatch();
 
+        #endregion
+
+        #region Constructors
+
         public WarlightBot()
         {
             map = new Map();
         }
+
+        #endregion
 
         #region Public Methods
         public void Run()
@@ -29,6 +37,7 @@ namespace WarlightBot
             while (run == true)
             {
                 string line = Console.ReadLine();
+
                 if (line == null)
                 {
                     break;
@@ -182,82 +191,64 @@ namespace WarlightBot
 
         }
 
+        /// <summary>
+        /// Deploys armies, giving preference to any territories currently bordered by an enemy.
+        /// Will deploy armies evenly if not bordered by an enemy.
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns>String to output in the form "myName place_armies regionId noOfArmies"</returns>
         private string PlaceArmies(Map map)
         {
             string output = "";
-            List<Region> enemyBorder = new List<Region>();
+            List<Region> regionsToDeploy = new List<Region>();
             Dictionary<int, int> armyDictionary = new Dictionary<int, int>();
 
             // Set up a list of all regions which are also bordered by an enemy territory so that they
             // can be given preference when deploying armies.
-           foreach(Region region in map.OwnedRegions(myName))
-           {
-               if(region.EnemyBorder(opponentName))
-               {
-                   enemyBorder.Add(region);
-               }
-           }
-
-            // If bordered by 1 or more enemy territories deploy armies evenly across those territories 
-            if(enemyBorder.Count >= 1)
+            foreach (Region region in map.OwnedRegions(myName))
             {
-                int count = 0;
-                while(totalArmiesThisTurn > 0)
+                if (region.EnemyBorder(opponentName))
                 {
-                    if (!armyDictionary.ContainsKey(enemyBorder[count].Id))
-                    {
-                        armyDictionary.Add(enemyBorder[count].Id, 1);
-                    }
-                    else
-                    {
-                        armyDictionary[enemyBorder[count].Id] += 1;
-                    }
-                    
-                    totalArmiesThisTurn -= 1;
-
-                    if(count + 1 >= enemyBorder.Count)
-                    {
-                        count = 0;
-                    }
-                    else { count += 1; }
-                }
-                foreach(KeyValuePair<int, int> deploy in armyDictionary)
-                {
-                    output += myName + " place_armies " + deploy.Key + " " + deploy.Value + ",";
+                    regionsToDeploy.Add(region);
                 }
             }
-            // Otherwise deploy armies evenly across all owned territories
-            else
+            
+            // If not bordered by any enemies, populate the list with all owned territories so that we can
+            // deploy across all of them easily
+            if (regionsToDeploy.Count == 0)
             {
-                int count = 0;
-                List<Region> ownedRegions = new List<Region>();
-                ownedRegions = map.OwnedRegions(myName);
-                while(totalArmiesThisTurn > 0)
-                {
-                    if(!armyDictionary.ContainsKey(ownedRegions[count].Id))
-                    {
-                        armyDictionary.Add(ownedRegions[count].Id, 1);
-                    }
-                    else
-                    {
-                        armyDictionary[ownedRegions[count].Id] += 1;
-                    }
-
-                    totalArmiesThisTurn -= 1;
-
-                    if(count + 1 >= ownedRegions.Count)
-                    {
-                        count = 0;
-                    }
-                    else { count += 1; }
-                }
-                
-                foreach(KeyValuePair<int, int> deploy in armyDictionary)
-                {
-                    output += myName + " place_armies " + deploy.Key + " " + deploy.Value + ",";
-                }
-
+                regionsToDeploy = map.OwnedRegions(myName);
             }
+
+            int count = 0;
+
+            while (totalArmiesThisTurn > 0)
+            {
+                // Add a new key to the dictionary is required, otherwise increment by 1
+                if (!armyDictionary.ContainsKey(regionsToDeploy[count].Id))
+                {
+                    armyDictionary.Add(regionsToDeploy[count].Id, 1);
+                }
+                else
+                {
+                    armyDictionary[regionsToDeploy[count].Id] += 1;
+                }
+
+                // Loop back to the beginning if required
+                if (count + 1 >= regionsToDeploy.Count)
+                {
+                    count = 0;
+                }
+                else { count += 1; }
+
+                totalArmiesThisTurn -= 1;
+            }
+        
+            foreach (KeyValuePair<int, int> deploy in armyDictionary)
+            {
+                output += myName + " place_armies " + deploy.Key + " " + deploy.Value + ",";
+            }
+        
             return output;
         }
     }
