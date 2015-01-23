@@ -69,6 +69,20 @@ namespace WarlightBot
             set { neighbours = value; }
         }
 
+        public bool EnemyBorder(string enemyName)
+        {
+            bool enemy = false;
+            foreach(Region neighbour in neighbours)
+            {
+                if(neighbour.OwnerName == enemyName)
+                {
+                    enemy = true;
+                    break;
+                }
+            }
+            return enemy;
+        }
+
         public override string ToString()
         {
             string str = "ID : " + id.ToString() + "\nOwner Name : " + ownerName + "\nArmies : " + armies.ToString() + "\nSuperRegion ID : " + superRegionId + "\nNeighbours : ";
