@@ -170,7 +170,8 @@ namespace WarlightBot
                     }
                     else if (parts[1] == "attack/transfer")
                     {
-                        Console.WriteLine("No moves");
+                        string output = AttackTransfer(map);
+                        Console.WriteLine(output);
                     }
                 }
                 #endregion
@@ -195,7 +196,7 @@ namespace WarlightBot
         /// Deploys armies, giving preference to any territories currently bordered by an enemy.
         /// Will deploy armies evenly if not bordered by an enemy.
         /// </summary>
-        /// <param name="map"></param>
+        /// <param name="map">The current map</param>
         /// <returns>String to output in the form "myName place_armies regionId noOfArmies"</returns>
         private string PlaceArmies(Map map)
         {
@@ -249,6 +250,33 @@ namespace WarlightBot
                 output += myName + " place_armies " + deploy.Key + " " + deploy.Value + ",";
             }
         
+            return output;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        private string AttackTransfer(Map map)
+        {
+            string output = "";
+
+            foreach(Region region in map.regions)
+            {
+                if(region.Armies > 2)
+                {
+                    foreach (Region neighbor in region.Neighbours)
+                    {
+                        if (region.Armies > 1.5 * neighbor.Armies)
+                        {
+                            output += myName + " attack/transfer " + region.Id + " " + neighbor.Id + " " + (region.Armies - 1).ToString() + ",";
+                            region.Armies = 1;
+                        }
+                    }
+                }
+            }
+
             return output;
         }
     }
