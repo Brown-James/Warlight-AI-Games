@@ -208,7 +208,7 @@ namespace WarlightBot
             // can be given preference when deploying armies.
             foreach (Region region in map.OwnedRegions(myName))
             {
-                if (region.EnemyBorder(opponentName))
+                if (region.EnemyBorder(opponentName).Count > 0)
                 {
                     regionsToDeploy.Add(region);
                 }
@@ -266,14 +266,46 @@ namespace WarlightBot
             {
                 if(region.Armies > 2)
                 {
-                    foreach (Region neighbor in region.Neighbours)
+                    List<Region> enemyBorders = new List<Region>();
+                    enemyBorders = region.EnemyBorder(opponentName);
+
+                    List<Region> wastelandBorders = new List<Region>();
+                    wastelandBorders = region.WastelandBorder();
+
+                    if (enemyBorders.Count > 0)
                     {
-                        if (region.Armies > 1.5 * neighbor.Armies)
+                        foreach (Region enemy in enemyBorders)
                         {
-                            output += myName + " attack/transfer " + region.Id + " " + neighbor.Id + " " + (region.Armies - 1).ToString() + ",";
-                            region.Armies = 1;
+                            if (region.Armies > 1.5 * enemy.Armies)
+                            {
+                                output += myName + " attack/transfer " + region.Id + " " + enemy.Id + " " + (region.Armies - 1).ToString() + ",";
+                                region.Armies = 1;
+                            }
                         }
                     }
+                    else if (wastelandBorders.Count > 0)
+                    {
+                        foreach (Region neighbor in wastelandBorders)
+                        {
+                            if (region.Armies > 1.5 * neighbor.Armies)
+                            {
+                                output += myName + " attack/transfer " + region.Id + " " + neighbor.Id + " " + (region.Armies - 1).ToString() + ",";
+                                region.Armies = 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach(Region neighbor in region.Neighbours)
+                        {
+                            if(region.Armies > neighbor.Armies)
+                            {
+                                output += myName + " attack/transfer " + region.Id + " " + neighbor.Id + " " + (region.Armies - neighbor.Armies).ToString() + ",";
+                                region.Armies -= (region.Armies - neighbor.Armies);
+                            }
+                        }
+                    }
+                    
                 }
             }
 

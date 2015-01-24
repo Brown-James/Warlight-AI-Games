@@ -69,18 +69,36 @@ namespace WarlightBot
             set { neighbours = value; }
         }
 
-        public bool EnemyBorder(string enemyName)
+        /// <summary>
+        /// Returns the IDs of bordering enemy regions if there is one. Other wise returns -1
+        /// </summary>
+        /// <param name="enemyName"></param>
+        /// <returns></returns>
+        public List<Region> EnemyBorder(string enemyName)
         {
-            bool enemy = false;
+            List<Region> enemyRegions = new List<Region>();
             foreach(Region neighbour in neighbours)
             {
                 if(neighbour.OwnerName == enemyName)
                 {
-                    enemy = true;
-                    break;
+                    enemyRegions.Add(neighbour);
                 }
             }
-            return enemy;
+            return enemyRegions;
+        }
+
+        public List<Region> WastelandBorder()
+        {
+            List<Region> wastelands = new List<Region>();
+            foreach(Region neighbour in neighbours)
+            {
+                if(neighbour.OwnerName == "neutral")
+                {
+                    wastelands.Add(neighbour);
+                }
+            }
+
+            return wastelands;
         }
 
         public override string ToString()
